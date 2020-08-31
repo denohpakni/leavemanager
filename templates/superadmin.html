@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid" style="">
+   <div class="bs-docs-section">
+      <div class="card border-light mb-3" style="border-width: .2rem;">
+         <div class="card-header">
+            <h2>Leave Applications</h2>
+         </div>
+         <div class="card-body">
+            <div class="row" style="margin-bottom: 2rem;">
+               <div class="col-lg-12">
+                  <div class="bs-component" style="overflow: hidden;">
+                     <!-- Table -->
+                     <table id="leaveApplicationTable" class="table table-striped" cellspacing="0" width="100%">
+                        <thead>
+                           <tr>
+                              <th class="th-sm">Employee</th>
+                              <th class="th-sm">Date</th>
+                              <th class="th-sm">Duration</th>
+                              <th class="th-sm">Reason</th>
+                              <th class="th-sm">Status</th>
+                              <th class="th-sm"></th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for leave in leaves %}
+                           <tr>
+                              <td class="employee">{{leave.employee.name}}</td>
+                              <td>{{leave.date}}</td>
+                              <td class="duration">{{leave.duration}}</td>
+                              <td>{{leave.description}}</td>
+                              <td>
+                                 <span class="status_value">{{leave.status}}</span>
+                                 <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle btnGroupDrop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" value=""></button>
+                                    <div class="dropdown-menu status_dropdown" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" href="#" onclick="changeValue(this)">Not Approved</a>
+                                       <a class="dropdown-item" href="#" onclick="changeValue(this)">Approved</a>
+                                    </div>
+                                 </div>
+                              </td>
+                              <td><a href="/save-leave-status/{{leave.id}}" class="btn btn-primary save_status disabled">Save</a>
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                        <tfoot>
+                           <tr>
+                              <th>Employee</th>
+                              <th>Date</th>
+                              <th>Duration</th>
+                              <th>Reason</th>
+                              <th>Status</th>
+                              <th></th> 
+                           </tr>
+                        </tfoot>
+                     </table>
+                     <!-- Apply leave Tab End -->
+                     <!-- Apply leave Tab -->
+                     <div class="tab-pane fade" id="profile">
+                        <div class="container">
+                           <div class="row" style="margin-bottom: 2rem;">
+                              <div class="col-lg-8">
+                                 <div class="bs-component">
+                                    <form method="POST" action="{% url 'apply-leave' %}">
+                                       {% csrf_token %}
+                                       <div class="form-group row">
+                                          <label for="inputEmail3" class="col-sm-2 col-form-label">Leave Type</label>
+                                          <div class="col-sm-10">
+                                             <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name='levae_type'>
+                                                <option value="Casual Leave">Casual Leave</option>
+                                                <option value="Sick Leave">Sick Leave</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                       <fieldset class="form-group">
+                                          <div class="row">
+                                             <legend class="col-form-label col-sm-2 pt-0">Duration</legend>
+                                             <div class="col-sm-10">
+                                                <div class="form-check form-check-inline">
+                                                   <input class="form-check-input" type="radio" name="DurationRadioOptions" id="inlineRadio1" value="Full Day" checked>
+                                                   <label class="form-check-label" for="inlineRadio1">Single Day</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                   <input class="form-check-input" type="radio" name="DurationRadioOptions" id="inlineRadio2" value="Multiple Day">
+                                                   <label class="form-check-label" for="inlineRadio2">Multiple Day</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                   <input class="form-check-input" type="radio" name="DurationRadioOptions" id="inlineRadio3" value="Half Day">
+                                                   <label class="form-check-label" for="inlineRadio3">Half Day</label>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </fieldset>
+                                       <div class="form-group row" id="SingleDateForm">
+                                          <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
+                                          <div class="col-sm-10">
+                                             <input id="Date" class="form-control" name='date' />
+                                          </div>
+                                       </div>
+                                       <div class="form-group row" id="MultipleDateForm" style="display: none;">
+                                          <label for="inputPassword3" class="col-sm-2 col-form-label">Start Date</label>
+                                          <div class="col-sm-4">
+                                             <input id="startDate" class="form-control" name="start_date" />
+                                          </div>
+                                          <label for="inputPassword3" class="col-sm-2 col-form-label">End Date</label>
+                                          <div class="col-sm-4">
+                                             <input id="EndDate" class="form-control" name="end_date" />
+                                          </div>
+                                       </div>
+                                       <div class="form-group row">
+                                          <label for="exampleTextarea" class="col-sm-2 col-form-label">Reason</label>
+                                          <div class="col-sm-10">
+                                             <textarea class="form-control" id="exampleTextarea" rows="3" name="reason"></textarea>
+                                          </div>
+                                       </div>
+                                       <div class="form-group row">
+                                          <div class="col-sm-10">
+                                             <button type="submit" class="btn btn-secondary">Cancel</button>
+                                             <button type="submit" class="btn btn-primary">Apply</button>
+                                          </div>
+                                       </div>
+                                    </form>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Apply leave Tab End -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+
+   $(document).ready(function(){
+   
+   $('#leaveApplicationTable').dataTable({
+   
+   columnDefs: [{
+   orderable: false,
+   className: 'select-checkbox',
+   targets: 0
+   }],
+   select: {
+   style: 'os',
+   selector: 'td:first-child'
+   }
+   });
+   /* DataTable End */
+   
+   
+   
+   //$(".status_dropdown a").on('click', function(){
+   $("#leaveApplicationTable").on("click", ".status_dropdown a", function(){
+   var txt= ($(this).text());
+   var href = $(this).parents('tr').find(".save_status").attr('href')
+   var employee = $(this).parents('tr').find(".employee").text()
+   var duration = $(this).parents('tr').find(".duration").text()
+   
+   $(this).parents('td').find('.status_value').text(txt)
+   $(this).parents('tr').find(".save_status").removeClass('disabled');
+   $(this).parents('tr').find(".save_status").attr('href', href+'/?employee='+employee+'&duration='+duration+'&status='+txt)
+   
+   });
+   });
+</script>
+{% endblock %}

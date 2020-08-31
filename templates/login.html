@@ -1,0 +1,61 @@
+<html>
+   {% load static %}
+   <header>
+      <title>Leave Application</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="{% static 'css/bootstrap.css' %}?rand={{rand}}" rel="stylesheet">
+      <link href="{% static 'fonts/font-awesome.min.css' %}?rand={{rand}}" rel="stylesheet">
+      <link href="{% static 'css/custom.css' %}?rand={{rand}}" rel="stylesheet">
+      <link href="{% static 'css/login.css' %}?rand={{rand}}" rel="stylesheet">
+   </header>
+   <body>
+      <div class="container">
+         <section class="jumbotron text-center">
+            <div class="container">
+               <h2 class="jumbotron-heading">Leave Application</h2>
+               <div class="row" style="display: flex;justify-content: center;">
+                  <div class="login-container">
+                     <div class="col-md-5 login-form-sidebar">
+                        <div style="padding: 5px;border-bottom: 1px solid #fff;">
+                           <h3>Log In</h3>
+                        </div>
+                        <br>
+                        <p style="color: #fff;">Dont have an account? <a href="#" style="color: #EFB73E;text-decoration: underline;">Sign Up!</a>
+                        </p>
+                     </div>
+                     <div class="col-md-5 login-form">
+                        {% if messages %}
+                        <div class="bs-component">
+                           <div class="alert alert-dismissible alert-warning">
+                              <button type="button" class="close" data-dismiss="alert">×</button>
+                              <h4 class="alert-heading">Error!</h4>
+                              {% for message in messages %}
+                              <p class="mb-0">{{ message }}</p>
+                              {% endfor %}
+                           </div>
+                        </div>
+                        {% endif %}
+                        <form method="POST" action="{% url 'login' %}">
+                           {% csrf_token %}
+                           <div class="form-group">
+                              <input type="text" class="form-control" name='username' placeholder="Your Username *" value="" required>
+                           </div>
+                           <div class="form-group">
+                              <input type="password" name="password" class="form-control" placeholder="Your Password *" value="" required>
+                           </div>
+                           <div class="form-group">
+                              <button type="submit" class="btn btn-primary">Log In</button>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+      <script src="{% static 'js/jquery.js' %}?rand={{rand}}"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}?rand={{rand}}"></script>
+      <script src="{% static 'js/custom.js' %}?rand={{rand}}"></script>
+   </body>
+</html>

@@ -1,0 +1,280 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+<div class="bs-docs-section" style="">
+   <div class="row">
+      <div class="col-lg-12">
+         <div class="bs-component">
+            <div class="card border-light mb-3" style="border-width: .2rem;">
+               <div class="card-header">
+                  <h2>My Leave</h2>
+               </div>
+               <div class="card-body">
+                  <div class="row" style="margin-bottom: 2rem;">
+                     <div class="col-lg-12">
+                        <div class="bs-component" style="overflow: hidden;">
+                           <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                 <a class="nav-link active" data-toggle="tab" href="#home">Dahboard</a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link" data-toggle="tab" href="#profile">Apply Leave</a>
+                              </li>
+                           </ul>
+                           <div id="myTabContent" class="tab-content">
+                              <!-- Dashboard Tab -->
+                              <div class="tab-pane fade show active" id="home">
+                                 <div class="container">
+                                    <div class="row" style="margin-bottom: 2rem;">
+                                       <div class="col-sm-4">
+                                          <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+                                             <div class="card-header">Total Leaves</div>
+                                             <div class="card-body">
+                                                <h4 class="card-title">{{ total_leaves }}</h4>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4">
+                                          <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+                                             <div class="card-header">Leaves Taken</div>
+                                             <div class="card-body">
+                                                <h4 class="card-title">{{ no_of_leaves }}</h4>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-4">
+                                          <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+                                             <div class="card-header">Remaining Leaves</div>
+                                             <div class="card-body">
+                                                <h4 class="card-title">{{ no_of_remaining_leaves }}</h4>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <h1>Leave Table</h1>
+                                 <hr>
+                                 <!-- Table -->
+                                 <table id="dt-material-checkbox" class="table table-striped" cellspacing="0" width="100%">
+                                    <thead>
+                                       <tr>
+                                          <th class="th-sm">Leave Type
+                                          </th>
+                                          <th class="th-sm">Date
+                                          </th>
+                                          <th class="th-sm">Duration
+                                          </th>
+                                          <th class="th-sm">Status
+                                          </th>
+                                          <th class="th-sm"></th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       {% for leave in leaves_list %}
+                                       <tr>
+                                          <td>{{leave.leave_type}}</td>
+                                          <td>{{leave.date}}</td>
+                                          <td>{{leave.duration}}</td>
+                                          <td>{{leave.status}}</td>
+                                          <td>
+                                          {% if leave.show_delete_button %}
+                                          <a href="/delete-leave-application/{{leave.id}}" class="btn btn-primary save_status">Delete</a>
+                                          {% endif %}
+                                          </td>
+                                       </tr>
+                                       {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                       <tr>
+                                          <th>Leave Type
+                                          </th>
+                                          <th>Date
+                                          </th>
+                                          <th>Duration
+                                          </th>
+                                          <th>Status
+                                          </th>
+                                          <th></th> 
+                                       </tr>
+                                    </tfoot>
+                                 </table>
+                              </div>
+                              <!-- Apply leave Tab End -->
+                              <!-- Apply leave Tab -->
+                              <div class="tab-pane fade" id="profile">
+                                 <div class="container">
+                                    <div class="row" style="margin-bottom: 2rem;">
+                                       <div class="col-lg-8">
+                                          <div class="bs-component" style="overflow: hidden;">
+                                             {% if application_closed == False %}
+                                             <form method="POST" action="{% url 'apply-leave' %}" autocomplete="off">
+                                                {% csrf_token %}
+                                                <div class="form-group row">
+                                                   <label for="inputEmail3" class="col-sm-2 col-form-label">Leave Type</label>
+                                                   <div class="col-sm-10">
+                                                      <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name='levae_type' required>
+                                                         <option value="Casual Leave">Casual Leave</option>
+                                                         <option value="Sick Leave">Sick Leave</option>
+                                                      </select>
+                                                   </div>
+                                                </div>
+                                                <fieldset class="form-group">
+                                                   <div class="row">
+                                                      <legend class="col-form-label col-sm-2 pt-0">Duration</legend>
+                                                      <div class="col-sm-10">
+                                                         <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="DurationRadioOptions" id="inlineRadio1" value="Full Day" checked>
+                                                            <label class="form-check-label" for="inlineRadio1">Single Day</label>
+                                                         </div>
+                                                         <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="DurationRadioOptions" id="inlineRadio2" value="Multiple Day">
+                                                            <label class="form-check-label" for="inlineRadio2">Multiple Day</label>
+                                                         </div>
+                                                         <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="DurationRadioOptions" id="inlineRadio3" value="Half Day" >
+                                                            <label class="form-check-label" for="inlineRadio3">Half Day</label>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </fieldset>
+                                                <div class="form-group row" id="SingleDateForm">
+                                                   <label for="inputPassword3" class="col-sm-2 col-form-label">Date</label>
+                                                   <div class="col-sm-10">
+                                                      <input id="Date" class="form-control" name='date' required>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group row" id="MultipleDateForm" style="display: none;">
+                                                   <label for="inputPassword3" class="col-sm-2 col-form-label" >Start Date</label>
+                                                   <div class="col-sm-4">
+                                                      <input id="startDate" class="form-control" name="start_date">
+                                                   </div>
+                                                   <label for="inputPassword3" class="col-sm-2 col-form-label">End Date</label>
+                                                   <div class="col-sm-4">
+                                                      <input id="EndDate" class="form-control" name="end_date">
+                                                   </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                   <label for="exampleTextarea" class="col-sm-2 col-form-label">Reason</label>
+                                                   <div class="col-sm-10">
+                                                      <textarea class="form-control" id="exampleTextarea" rows="3" maxlength="150" name="reason" placeholder="Enter your reason" style="resize: none;" required></textarea>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                   <div class="col-sm-10 text-center">
+                                                      <button type="submit" class="btn btn-primary">Apply</button>
+                                                   </div>
+                                                </div>
+                                             </form>
+                                          </div>
+                                          {% else %}
+                                          <p class="card-text text-secondary">{{message}}</p>
+                                          {% endif %}
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- Apply leave Tab End -->
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+   $(document).ready(function(){
+   
+   
+   $('#exampleTextarea').val(''); //clear value on page load
+   
+   /* DataTable */
+   
+   $('#dt-material-checkbox').dataTable({
+   
+   resposive: true,
+   columnDefs: [{
+   orderable: false,
+   className: 'select-checkbox',
+   targets: 0
+   }],
+   select: {
+   style: 'os',
+   selector: 'td:first-child'
+   }
+   });
+   /* DataTable End */
+   
+   
+   /* Date Picker */
+   
+   var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+   
+   $('#Date').datepicker({
+               uiLibrary: 'bootstrap4',
+               format: 'mm/dd/yyyy',
+               iconsLibrary: 'fontawesome',
+               minDate: today,
+               maxDate: function () {
+                   return $('#endDate').val();
+               }
+           });
+   
+   $('#startDate').datepicker({
+               uiLibrary: 'bootstrap4',
+               format: 'mm/dd/yyyy',
+               iconsLibrary: 'fontawesome',
+               minDate: today,
+               maxDate: function () {
+                   return $('#endDate').val();
+               }
+           });
+   
+   $('#EndDate').datepicker({
+               uiLibrary: 'bootstrap4',
+               format: 'mm/dd/yyyy',
+               iconsLibrary: 'fontawesome',
+               minDate: today,
+               maxDate: function () {
+                   return $('#endDate').val();
+               }
+           });
+   
+   
+   /* Date Picker End */
+   
+   /* Radio Button Click Function */
+   
+   $("input[name$='DurationRadioOptions']").click(function() {
+           var val = $(this).val();
+   
+   
+           if ( val == 'Half Day' || val == 'Full Day'){
+
+             $('#Date').prop('required',true);
+             $('#startDate').prop('required',false);
+             $('#EndDate').prop('required',false);
+             $("#MultipleDateForm").hide();
+             $("#SingleDateForm").show();
+
+           }else if ( val == 'Multiple Day' ){
+   
+             $('#Date').prop('required',false);
+             $('#startDate').prop('required',true);
+             $('#EndDate').prop('required',true);
+             $("#MultipleDateForm").show();
+             $("#SingleDateForm").hide();
+
+           }
+           
+       });
+   
+   /* Radio Button Click Function End */
+   
+   })
+</script>
+{% endblock %}

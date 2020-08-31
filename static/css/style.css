@@ -1,0 +1,49 @@
+.bs-docs-section{
+         background-color: #fff !important;
+         padding: 20px;
+         margin-bottom: 20px;
+         }
+         /* Remove the navbar's default margin-bottom and rounded borders */ 
+         .navbar-inverse {
+         background-color: #00cc00	 !important;
+         border-color: #70e920 !important;
+         }
+         .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+         color: #fff;
+         background-color: transparent !important;
+         }
+         .card-header {
+         background-color: transparent !important;
+         }
+         .navbar {
+         margin-bottom: 0;
+         border-radius: 0;
+         }
+         .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+         border-color: #E95420 !important;
+         }
+         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+         .row.content {height: 450px}
+         /* Set gray background color and 100% height */
+         .sidenav {
+         padding-top: 20px;
+         background-color: #AEA79F;
+         height: 100%;
+         }
+         /* Set black background color, white text and some padding */
+         footer {
+         position: fixed;
+         bottom: 0px;
+         color: #fff;
+         background-color: #978e83;
+         border-color: #91877c;
+         padding: 15px;
+         }
+         /* On small screens, set height to 'auto' for sidenav and grid */
+         @media screen and (max-width: 767px) {
+         .sidenav {
+         height: auto;
+         padding: 15px;
+         }
+         .row.content {height:auto;} 
+         }
